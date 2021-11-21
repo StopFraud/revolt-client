@@ -23,6 +23,7 @@ def service_check(pip):
         print(proxies)
 
         d1={'_wpcf7':'1319','_wpcf7_version':'5.4.2','_wpcf7_locale':'ru_RU','_wpcf7_unit_tag':'wpcf7-f1319-p2584-o1','_wpcf7_container_post':'2584','your-name':data["final_name"],'your-email':data["email"],'your-message':data["phrase"]}
+        print (d1)
 
         try:    
             r = requests.post('https://revolutexpert.co/ru/wp-json/contact-form-7/v1/contact-forms/1319/feedback',data=d1,proxies=proxies, timeout=15)
@@ -30,12 +31,6 @@ def service_check(pip):
             print (r.status_code)
             print ('--------------------')
             if 'leadGuid' in r.text:
-                print('::::::::::revolt msg OK:::::::::::')
-                print(data['name'])
-                print(data['surname'])
-                print(data['email'])
-                print(data['password'])
-                _cred('revolt',data['email'],data['password'],r.text)
                 good_proxy=1
         except Exception as e:
             print (e)
@@ -46,14 +41,21 @@ def service_check(pip):
             data = json.loads(url.read().decode())
 
 #            d1={'_wpcf7':'5','_wpcf7_version':'5.3.2','_wpcf7_locale':'ru_RU','_wpcf7_unit_tag':'wpcf7-f5-o1','_wpcf7_container_post':'0','your-name':data["final_name"],'email-730':data["email"],'menu-326':'Россия','tel-163':data["phone_full"],'menu-48':'Открытие счёта','your-message':data["phrase"]}
-            d1={'post_id':'2624','form_id':'47dbd8cb','queried_id':'2624','form_fields[firstName]':data['name'],'form_fields[lastName]':data['surname'],'form_fields[contacts__email]':data['email'],'form_fields[password]':data['password'],'form_fields[address__countryCode]':'RU','form_fields[contacts__phone]':data['phone_full'],'form_fields[field_4]':'on','form_fields[field_1]':'on','form_fields[field_2]':'on','form_fields[field_4]':'on','form_fields[lang]':'ru','action':'elementor_pro_forms_send_form','referrer':'https://revolutexpert.co/ru/sign-up'
+            d1={'post_id':'2624','form_id':'47dbd8cb','queried_id':'2624','form_fields[firstName]':data['name'],'form_fields[lastName]':data['surname'],'form_fields[contacts__email]':data['email'],'form_fields[password]':data['password'],'form_fields[address__countryCode]':'RU','form_fields[contacts__phone]':data['phone_full'],'form_fields[field_4]':'on','form_fields[field_1]':'on','form_fields[field_2]':'on','form_fields[field_3]':'on','form_fields[lang]':'ru','action':'elementor_pro_forms_send_form','referrer':'https://revolutexpert.co/ru/sign-up'}
             print(d1)    
             try:
                 r1 = requests.post('https://revolutexpert.co/wp-admin/admin-ajax.php',data=d1,proxies=proxies, timeout=15)
                 print (r1.text)
                 print (r1.status_code)
                 print ("revolt reg")
-                if ('mail_sent' in r1.text):
+                if ('The form was sent successfully' in r1.text):
+                    print('::::::::::revolt msg OK:::::::::::')
+                    print(data['name'])
+                    print(data['surname'])
+                    print(data['email'])
+                    print(data['password'])
+                    _cred('revolt',data['email'],data['password'],r1.text)
+
                     good_proxy=1
                 else:
                     good_proxy=0
